@@ -21,10 +21,15 @@ RUN apt-get update && apt-get install -y \
         mcrypt \
         mysql \
         mysqli \
+        pcntl \
         pdo_mysql \
         zip \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
+
+RUN pecl install \
+        memcache \
+    && echo "extension=memcache.so" > /usr/local/etc/php/conf.d/pecl-memcache.ini
 
 RUN cd /usr/local \
     && curl -sS https://getcomposer.org/installer | php \
