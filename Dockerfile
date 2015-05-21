@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
         libpng12-dev \
         mysql-client \
         pngquant \
+        ssmtp \
         unzip \
         wget \
         zlib1g-dev \
@@ -32,6 +33,8 @@ RUN rm /usr/local/etc/php/conf.d/ext-curl.ini
 RUN pecl install \
         memcache \
     && echo "extension=memcache.so" > /usr/local/etc/php/conf.d/pecl-memcache.ini
+
+RUN echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/conf-sendmail.ini
 
 RUN cd /usr/local \
     && curl -sS https://getcomposer.org/installer | php \
