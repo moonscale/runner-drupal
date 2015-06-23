@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
         git \
         libcurl4-openssl-dev \
         libfreetype6-dev \
+        libjpeg-turbo-progs \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng12-dev \
