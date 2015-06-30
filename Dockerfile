@@ -4,6 +4,7 @@ ENV DEBCONF_FRONTEND non-interactive
 
 RUN apt-get update && apt-get install -y \
         git \
+        imagemagick \
         libcurl4-openssl-dev \
         libfreetype6-dev \
         libjpeg-turbo-progs \
