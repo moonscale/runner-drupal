@@ -1,4 +1,4 @@
-FROM php:5.5-apache
+FROM php:5.6-apache
 
 ENV DEBCONF_FRONTEND non-interactive
 
@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y \
         mcrypt \
         mysql \
         mysqli \
+        opcache \
         pcntl \
         pdo_mysql \
         zip \
