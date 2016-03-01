@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
         wget \
         zlib1g-dev \
     && docker-php-ext-install \
+        bcmath \
         curl \
         exif \
         mbstring \
