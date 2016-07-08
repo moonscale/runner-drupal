@@ -1,6 +1,8 @@
-FROM php:5.5-apache
+FROM php:5.6-apache
 
 ENV DEBCONF_FRONTEND non-interactive
+
+ADD bin/docker-php-pecl-install /usr/local/bin/
 
 RUN apt-get update && apt-get install -y \
         git \
@@ -11,6 +13,7 @@ RUN apt-get update && apt-get install -y \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng12-dev \
+        libxml2-dev \
         mysql-client \
         pngquant \
         ssmtp \
@@ -19,23 +22,29 @@ RUN apt-get update && apt-get install -y \
         wget \
         zlib1g-dev \
     && docker-php-ext-install \
+        bcmath \
         curl \
         exif \
         mbstring \
         mcrypt \
         mysql \
         mysqli \
+        opcache \
         pcntl \
         pdo_mysql \
+        soap \
         zip \
+    && apt-get clean && apt-get autoremove -q \
+    && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man /tmp/* \
+    && a2enmod deflate expires headers mime rewrite \
+    && echo "<Directory /var/www/html>\nAllowOverride All\n</Directory>" > /etc/apache2/conf-enabled/allowoverride.conf \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd
-
-RUN pecl install \
+    && docker-php-ext-install gd \
+    && echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/conf-sendmail.ini \
+    && echo "date.timezone='Europe/Paris'\n" > /usr/local/etc/php/conf.d/conf-date.ini \
+    && docker-php-pecl-install \
         memcache \
-    && echo "extension=memcache.so" > /usr/local/etc/php/conf.d/pecl-memcache.ini
-
-RUN echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/conf-sendmail.ini
+        uploadprogress
 
 RUN cd /usr/local \
     && curl -sS https://getcomposer.org/installer | php \
@@ -47,11 +56,3 @@ RUN cd /usr/local \
     && cd /usr/local/drush \
     && composer install \
     && ln -s /usr/local/drush/drush /usr/bin/drush
-
-RUN apt-get clean
-
-RUN a2enmod deflate
-RUN a2enmod expires
-RUN a2enmod headers
-RUN a2enmod mime
-RUN a2enmod rewrite
