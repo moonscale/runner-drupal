@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
     && git clone https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
-    && cd /usr/src/php/ext/memcached && git checkout -b php7 origin/php7 \
+    && cd /usr/src/php/ext/memcached && git checkout 6ace07da69a5ebc021e56a9d2f52cdc8897b4f23 \
     && docker-php-ext-configure memcached \
     && docker-php-ext-install memcached \
     && echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/conf-sendmail.ini \
