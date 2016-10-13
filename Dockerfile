@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
         libjpeg-turbo-progs \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
+        libmemcached-dev \
         libpng12-dev \
         libxml2-dev \
         mysql-client \
@@ -39,11 +40,12 @@ RUN apt-get update && apt-get install -y \
     && echo "<Directory /var/www/html>\nAllowOverride All\n</Directory>" > /etc/apache2/conf-enabled/allowoverride.conf \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
+    && git clone https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
+    && cd /usr/src/php/ext/memcached && git checkout -b php7 origin/php7 \
+    && docker-php-ext-configure memcached \
+    && docker-php-ext-install memcached \
     && echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/conf-sendmail.ini \
-    && echo "date.timezone='Europe/Paris'\n" > /usr/local/etc/php/conf.d/conf-date.ini \
-    && docker-php-pecl-install \
-        memcache \
-        uploadprogress
+    && echo "date.timezone='Europe/Paris'\n" > /usr/local/etc/php/conf.d/conf-date.ini
 
 RUN cd /usr/local \
     && curl -sS https://getcomposer.org/installer | php \
