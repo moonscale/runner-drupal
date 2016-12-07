@@ -7,6 +7,7 @@ ADD bin/docker-php-pecl-install /usr/local/bin/
 RUN apt-get update && apt-get install -y \
         git \
         imagemagick \
+        libapache2-mod-rpaf \
         libcurl4-openssl-dev \
         libfreetype6-dev \
         libjpeg-turbo-progs \
@@ -52,7 +53,7 @@ RUN cd /usr/local \
     && ln -s /usr/local/composer.phar /usr/local/bin/composer
 
 RUN cd /usr/local \
-    && git clone http://github.com/drush-ops/drush.git --branch master \
+    && git clone http://github.com/drush-ops/drush.git --branch 8.x \
     && cd /usr/local/drush \
     && composer install \
     && ln -s /usr/local/drush/drush /usr/bin/drush
