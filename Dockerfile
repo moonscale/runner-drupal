@@ -1,6 +1,7 @@
 FROM php:7.0-apache
 
 ENV DEBCONF_FRONTEND non-interactive
+ENV PHPREDIS_VERSION 3.1.4
 
 ADD bin/docker-php-pecl-install /usr/local/bin/
 
@@ -18,11 +19,15 @@ RUN apt-get update && apt-get install -y \
         libxml2-dev \
         mysql-client \
         pngquant \
+        redis-tools \
         ssmtp \
         sudo \
         unzip \
         wget \
         zlib1g-dev \
+    && mkdir -p /usr/src/php/ext/redis \
+	   && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
+	   && echo 'redis' >> /usr/src/php-available-exts \
     && docker-php-ext-install \
         bcmath \
         curl \
@@ -33,6 +38,7 @@ RUN apt-get update && apt-get install -y \
         opcache \
         pcntl \
         pdo_mysql \
+        redis \
         soap \
         zip \
     && apt-get clean && apt-get autoremove -q \
