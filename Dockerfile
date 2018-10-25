@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM php:7.2-apache
 
 ENV DEBCONF_FRONTEND non-interactive
 ENV PHPREDIS_VERSION 3.1.4
@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libmemcached-dev \
-        libpng12-dev \
+        libpng-dev \
         libxml2-dev \
         mysql-client \
         pngquant \
@@ -33,7 +33,6 @@ RUN apt-get update && apt-get install -y \
         curl \
         exif \
         mbstring \
-        mcrypt \
         mysqli \
         opcache \
         pcntl \
